@@ -87,9 +87,13 @@ class PhoneNumber extends Equatable {
         phoneNumber: number.phoneNumber!,
         isoCode: number.isoCode!,
       );
-
+      print(formattedNumber);
+      print(formattedNumber!.replaceAll(
+        RegExp('^([\\+]?${phoneNumber.dialCode ?? number.dialCode}[\\s]?)'),
+        '',
+      ));
       return formattedNumber!.replaceAll(
-        RegExp('^([\\+]?${number.dialCode}[\\s]?)'),
+        RegExp('^([\\+]?${phoneNumber.dialCode ?? number.dialCode}[\\s]?)'),
         '',
       );
     } else {
