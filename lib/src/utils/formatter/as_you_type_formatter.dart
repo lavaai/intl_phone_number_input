@@ -33,61 +33,44 @@ class AsYouTypeFormatter extends TextInputFormatter {
     int oldValueLength = oldValue.text.length;
     int newValueLength = newValue.text.length;
 
-    if (newValueLength > 0 && newValueLength > oldValueLength) {
+    if (newValueLength > 0) {
       String newValueText = newValue.text;
       String rawText = newValueText.replaceAll(separatorChars, '');
       String textToParse = dialCode + rawText;
 
       final _ = newValueText
-          .substring(
-              oldValue.selection.start == -1 ? 0 : oldValue.selection.start,
-              newValue.selection.end == -1 ? 0 : newValue.selection.end)
+          .substring(0, newValue.selection.end)
           .replaceAll(separatorChars, '');
 
       formatAsYouType(input: textToParse).then(
         (String? value) {
           String parsedText = parsePhoneNumber(value);
 
-          int offset =
+          int currentOffset =
               newValue.selection.end == -1 ? 0 : newValue.selection.end;
 
-          if (separatorChars.hasMatch(parsedText)) {
-            String valueInInputIndex = parsedText[offset - 1];
-
-            if (offset < parsedText.length) {
-              int offsetDifference = parsedText.length - offset;
-
-              if (offsetDifference < 2) {
-                if (separatorChars.hasMatch(valueInInputIndex)) {
-                  offset += 1;
-                } else {
-                  bool isLastChar;
-                  try {
-                    var _ = newValueText[newValue.selection.end];
-                    isLastChar = false;
-                  } on RangeError {
-                    isLastChar = true;
-                  }
-                  if (isLastChar) {
-                    offset += offsetDifference;
-                  }
-                }
-              } else {
-                if (parsedText.length > offset - 1) {
-                  if (separatorChars.hasMatch(valueInInputIndex)) {
-                    offset += 1;
-                  }
-                }
-              }
+          int digitOffset = 0;
+          for (var index = 0; index < currentOffset; index++) {
+            if (allowedChars.hasMatch(newValueText[index])) {
+              digitOffset++;
             }
-
-            this.onInputFormatted(
-              TextEditingValue(
-                text: parsedText,
-                selection: TextSelection.collapsed(offset: offset),
-              ),
-            );
           }
+
+          int newOffset = 0;
+          int digitCount = 0;
+          while (digitCount < digitOffset) {
+            if (allowedChars.hasMatch(parsedText[newOffset])) {
+              digitCount++;
+            }
+            newOffset++;
+          }
+
+          this.onInputFormatted(
+            TextEditingValue(
+              text: parsedText,
+              selection: TextSelection.collapsed(offset: newOffset),
+            ),
+          );
         },
       );
     }
