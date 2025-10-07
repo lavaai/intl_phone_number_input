@@ -87,15 +87,12 @@ class PhoneNumber extends Equatable {
         phoneNumber: number.phoneNumber!,
         isoCode: number.isoCode!,
       );
-      print(formattedNumber);
-      print(formattedNumber!.replaceAll(
-        RegExp('^([\\+]?${phoneNumber.dialCode ?? number.dialCode}[\\s]?)'),
-        '',
-      ));
-      return formattedNumber.replaceAll(
-        RegExp('^([\\+]?${phoneNumber.dialCode ?? number.dialCode}[\\s]?)'),
-        '',
-      );
+      return formattedNumber?.replaceAll(
+            RegExp(
+                '^([\\+]?${phoneNumber.dialCode?.replaceAll("+", "") ?? number.dialCode}[\\s]?)'),
+            '',
+          ) ??
+          "";
     } else {
       throw new Exception('ISO Code is "${phoneNumber.isoCode}"');
     }

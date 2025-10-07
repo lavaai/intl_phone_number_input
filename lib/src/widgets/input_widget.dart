@@ -372,11 +372,6 @@ class _InputWidgetView
   Widget build(BuildContext context) {
     final countryCode = state.country?.alpha2Code ?? '';
     final dialCode = state.country?.dialCode ?? '';
-    var _countries = state.countries;
-    if (state.country != null) {
-      _countries.removeAt(state.countries.indexOf(state.country!));
-      _countries.insert(0, state.country!);
-    }
 
     return Container(
       child: Row(
@@ -428,7 +423,7 @@ class _InputWidgetView
                 top: 3,
                 child: SelectorButton(
                   country: state.country,
-                  countries: _countries,
+                  countries: state.countries,
                   onCountryChanged: state.onCountryChanged,
                   selectorConfig: widget.selectorConfig,
                   selectorTextStyle: widget.selectorTextStyle,
