@@ -1,5 +1,3 @@
-import 'package:flutter/rendering.dart';
-
 /// A [Country] model represents an instance of a country which contains
 /// information about the country
 class Country {

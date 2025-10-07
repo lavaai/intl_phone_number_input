@@ -125,7 +125,7 @@ class PhoneNumberTypeUtil {
 }
 
 /// Extension on PhoneNumberType
-extension phonenumbertypeproperties on PhoneNumberType {
+extension PhoneNumberTypeProperties on PhoneNumberType {
   /// Returns the index [int] of the current `PhoneNumberType`
   int get value {
     switch (this) {
@@ -145,7 +145,7 @@ extension phonenumbertypeproperties on PhoneNumberType {
         return 6;
       case PhoneNumberType.PERSONAL_NUMBER:
         return 7;
-      case PhoneNumberType.PREMIUM_RATE:
+      case PhoneNumberType.PAGER:
         return 8;
       case PhoneNumberType.UAN:
         return 9;

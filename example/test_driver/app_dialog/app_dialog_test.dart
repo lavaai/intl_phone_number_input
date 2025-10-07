@@ -10,15 +10,18 @@ main() {
     final countrySearchInputFinder =
         find.byValueKey(TestHelper.CountrySearchInputKeyValue);
 
-    FlutterDriver driver;
+    late FlutterDriver driver;
 
     setUpAll(() async {
       driver = await FlutterDriver.connect();
     });
 
     tearDownAll(() async {
-      if (driver != null) {
-        driver.close();
+      try {
+        await driver.close();
+      } catch (e) {
+        // Handle any errors during driver cleanup (including uninitialized driver)
+        print('Error closing driver: $e');
       }
     });
 
